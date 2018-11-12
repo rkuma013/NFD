@@ -29,6 +29,7 @@
 #include "face-counters.hpp"
 #include "face-log.hpp"
 #include "link-service.hpp"
+#include "generic-link-service.hpp"
 #include "transport.hpp"
 
 namespace nfd {
@@ -68,131 +69,131 @@ class Face
 #ifndef WITH_TESTS
 final
 #endif
-  : public std::enable_shared_from_this<Face>, noncopyable
+ : public std::enable_shared_from_this<Face>, noncopyable
 {
 public:
-  Face(unique_ptr<LinkService> service, unique_ptr<Transport> transport);
+ Face(unique_ptr<GenericLinkService> service, unique_ptr<Transport> transport);
 
-  LinkService*
-  getLinkService() const;
+ GenericLinkService*
+ getLinkService() const;
 
-  Transport*
-  getTransport() const;
+ Transport*
+ getTransport() const;
 
 public: // upper interface connected to forwarding
-  /** \brief sends Interest on Face
-   */
-  void
-  sendInterest(const Interest& interest);
+ /** \brief sends Interest on Face
+  */
+ void
+ sendInterest(const Interest& interest);
 
-  /** \brief sends Data on Face
-   */
-  void
-  sendData(const Data& data);
+ /** \brief sends Data on Face
+  */
+ void
+ sendData(const Data& data);
 
-  /** \brief sends Nack on Face
-   */
-  void
-  sendNack(const lp::Nack& nack);
+ /** \brief sends Nack on Face
+  */
+ void
+ sendNack(const lp::Nack& nack);
 
-  /** \brief signals on Interest received
-   */
-  signal::Signal<LinkService, Interest>& afterReceiveInterest;
+ /** \brief signals on Interest received
+  */
+ signal::Signal<GenericLinkService, Interest>& afterReceiveInterest;
 
-  /** \brief signals on Data received
-   */
-  signal::Signal<LinkService, Data>& afterReceiveData;
+ /** \brief signals on Data received
+  */
+ signal::Signal<GenericLinkService, Data>& afterReceiveData;
 
-  /** \brief signals on Nack received
-   */
-  signal::Signal<LinkService, lp::Nack>& afterReceiveNack;
+ /** \brief signals on Nack received
+  */
+ signal::Signal<GenericLinkService, lp::Nack>& afterReceiveNack;
 
-  /** \brief signals on Interest dropped by reliability system for exceeding allowed number of retx
-   */
-  signal::Signal<LinkService, Interest>& onDroppedInterest;
+ /** \brief signals on Interest dropped by reliability system for exceeding allowed number of retx
+  */
+ signal::Signal<GenericLinkService, Interest>& onDroppedInterest;
 
 public: // static properties
-  /** \return face ID
-   */
-  FaceId
-  getId() const;
+ /** \return face ID
+  */
+ FaceId
+ getId() const;
 
-  /** \brief sets face ID
-   *  \note Normally, this should only be invoked by FaceTable.
-   */
-  void
-  setId(FaceId id);
+ /** \brief sets face ID
+  *  \note Normally, this should only be invoked by FaceTable.
+  */
+ void
+ setId(FaceId id);
 
-  /** \return a FaceUri representing local endpoint
-   */
-  FaceUri
-  getLocalUri() const;
+ /** \return a FaceUri representing local endpoint
+  */
+ FaceUri
+ getLocalUri() const;
 
-  /** \return a FaceUri representing remote endpoint
-   */
-  FaceUri
-  getRemoteUri() const;
+ /** \return a FaceUri representing remote endpoint
+  */
+ FaceUri
+ getRemoteUri() const;
 
-  /** \return whether face is local or non-local for scope control purpose
-   */
-  ndn::nfd::FaceScope
-  getScope() const;
+ /** \return whether face is local or non-local for scope control purpose
+  */
+ ndn::nfd::FaceScope
+ getScope() const;
 
-  /** \return face persistency setting
-   */
-  ndn::nfd::FacePersistency
-  getPersistency() const;
+ /** \return face persistency setting
+  */
+ ndn::nfd::FacePersistency
+ getPersistency() const;
 
-  /** \brief changes face persistency setting
-   */
-  void
-  setPersistency(ndn::nfd::FacePersistency persistency);
+ /** \brief changes face persistency setting
+  */
+ void
+ setPersistency(ndn::nfd::FacePersistency persistency);
 
-  /** \return whether face is point-to-point or multi-access
-   */
-  ndn::nfd::LinkType
-  getLinkType() const;
+ /** \return whether face is point-to-point or multi-access
+  */
+ ndn::nfd::LinkType
+ getLinkType() const;
 
 public: // dynamic properties
-  /** \return face state
-   */
-  FaceState
-  getState() const;
+ /** \return face state
+  */
+ FaceState
+ getState() const;
 
-  /** \brief signals after face state changed
-   */
-  signal::Signal<Transport, FaceState/*old*/, FaceState/*new*/>& afterStateChange;
+ /** \brief signals after face state changed
+  */
+ signal::Signal<Transport, FaceState /*old*/, FaceState /*new*/>& afterStateChange;
 
-  /** \return expiration time of the face
-   *  \retval time::steady_clock::TimePoint::max() the face has an indefinite lifetime
-   */
-  time::steady_clock::TimePoint
-  getExpirationTime() const;
+ /** \return expiration time of the face
+  *  \retval time::steady_clock::TimePoint::max() the face has an indefinite lifetime
+  */
+ time::steady_clock::TimePoint
+ getExpirationTime() const;
 
-  /** \brief request the face to be closed
-   *
-   *  This operation is effective only if face is in UP or DOWN state,
-   *  otherwise it has no effect.
-   *  The face changes state to CLOSING, and performs cleanup procedure.
-   *  The state will be changed to CLOSED when cleanup is complete, which may
-   *  happen synchronously or asynchronously.
-   *
-   *  \warning the face must not be deallocated until its state changes to CLOSED
-   */
-  void
-  close();
+ /** \brief request the face to be closed
+  *
+  *  This operation is effective only if face is in UP or DOWN state,
+  *  otherwise it has no effect.
+  *  The face changes state to CLOSING, and performs cleanup procedure.
+  *  The state will be changed to CLOSED when cleanup is complete, which may
+  *  happen synchronously or asynchronously.
+  *
+  *  \warning the face must not be deallocated until its state changes to CLOSED
+  */
+ void
+ close();
 
-  const FaceCounters&
-  getCounters() const;
+ const FaceCounters&
+ getCounters() const;
 
 private:
-  FaceId m_id;
-  unique_ptr<LinkService> m_service;
-  unique_ptr<Transport> m_transport;
-  FaceCounters m_counters;
+ FaceId m_id;
+ unique_ptr<GenericLinkService> m_service;
+ unique_ptr<Transport> m_transport;
+ FaceCounters m_counters;
 };
 
-inline LinkService*
+inline GenericLinkService*
 Face::getLinkService() const
 {
   return m_service.get();
@@ -285,7 +286,7 @@ Face::getExpirationTime() const
 inline void
 Face::close()
 {
-  m_transport->close();
+        m_transport->close();
 }
 
 inline const FaceCounters&

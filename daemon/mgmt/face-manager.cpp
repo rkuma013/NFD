@@ -448,8 +448,16 @@ FaceManager::collectFaceStatus(const Face& face, const time::steady_clock::TimeP
         .setNInNacks(counters.nInNacks)
         .setNOutNacks(counters.nOutNacks)
         .setNInBytes(counters.nInBytes)
-        .setNOutBytes(counters.nOutBytes);
-
+        .setNOutBytes(counters.nOutBytes)
+        .setNFragmentationErrors(counters.nFragmentationErrors)
+        .setNOutOverMtu(counters.nOutOverMtu)
+        .setNInLpInvalid(counters.nInLpInvalid)
+  	    .setNReassemblyTimeouts(counters.nReassemblyTimeouts)
+  	    .setNInNetInvalid(counters.nInNetInvalid)
+  	    .setNAcknowledged(counters.nAcknowledged)
+  	    .setNRetransmitted(counters.nRetransmitted)
+  	    .setNRetxExhausted(counters.nRetxExhausted)
+  	    .setNCongestionMarked(counters.nCongestionMarked);
   return status;
 }
 

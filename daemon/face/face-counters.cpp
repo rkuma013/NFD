@@ -28,21 +28,30 @@
 namespace nfd {
 namespace face {
 
-FaceCounters::FaceCounters(const LinkService::Counters& linkServiceCounters,
+FaceCounters::FaceCounters(const GenericLinkService::Counters& linkServiceCounters,
                            const Transport::Counters& transportCounters)
-  : nInInterests(linkServiceCounters.nInInterests)
-  , nOutInterests(linkServiceCounters.nOutInterests)
-  , nDroppedInterests(linkServiceCounters.nDroppedInterests)
-  , nInData(linkServiceCounters.nInData)
-  , nOutData(linkServiceCounters.nOutData)
-  , nInNacks(linkServiceCounters.nInNacks)
-  , nOutNacks(linkServiceCounters.nOutNacks)
-  , nInPackets(transportCounters.nInPackets)
-  , nOutPackets(transportCounters.nOutPackets)
-  , nInBytes(transportCounters.nInBytes)
-  , nOutBytes(transportCounters.nOutBytes)
-  , m_linkServiceCounters(linkServiceCounters)
-  , m_transportCounters(transportCounters)
+ : nInInterests(linkServiceCounters.nInInterests)
+ , nOutInterests(linkServiceCounters.nOutInterests)
+ , nDroppedInterests(linkServiceCounters.nDroppedInterests)
+ , nInData(linkServiceCounters.nInData)
+ , nOutData(linkServiceCounters.nOutData)
+ , nInNacks(linkServiceCounters.nInNacks)
+ , nOutNacks(linkServiceCounters.nOutNacks)
+ , nInPackets(transportCounters.nInPackets)
+ , nOutPackets(transportCounters.nOutPackets)
+ , nInBytes(transportCounters.nInBytes)
+ , nOutBytes(transportCounters.nOutBytes)
+ , m_linkServiceCounters(linkServiceCounters)
+ , m_transportCounters(transportCounters)
+ , nFragmentationErrors(linkServiceCounters.nFragmentationErrors)
+ , nOutOverMtu(linkServiceCounters.nOutOverMtu)
+ , nInLpInvalid(linkServiceCounters.nInLpInvalid)
+ , nReassemblyTimeouts(linkServiceCounters.nReassemblyTimeouts)
+ , nInNetInvalid(linkServiceCounters.nInNetInvalid)
+ , nAcknowledged(linkServiceCounters.nAcknowledged)
+ , nRetransmitted(linkServiceCounters.nRetransmitted)
+ , nRetxExhausted(linkServiceCounters.nRetxExhausted)
+ , nCongestionMarked(linkServiceCounters.nCongestionMarked)
 {
 }
 

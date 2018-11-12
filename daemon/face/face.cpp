@@ -28,16 +28,16 @@
 namespace nfd {
 namespace face {
 
-Face::Face(unique_ptr<LinkService> service, unique_ptr<Transport> transport)
-  : afterReceiveInterest(service->afterReceiveInterest)
-  , afterReceiveData(service->afterReceiveData)
-  , afterReceiveNack(service->afterReceiveNack)
-  , onDroppedInterest(service->onDroppedInterest)
-  , afterStateChange(transport->afterStateChange)
-  , m_id(INVALID_FACEID)
-  , m_service(std::move(service))
-  , m_transport(std::move(transport))
-  , m_counters(m_service->getCounters(), m_transport->getCounters())
+Face::Face(unique_ptr<GenericLinkService> service, unique_ptr<Transport> transport)
+ : afterReceiveInterest(service->afterReceiveInterest)
+ , afterReceiveData(service->afterReceiveData)
+ , afterReceiveNack(service->afterReceiveNack)
+ , onDroppedInterest(service->onDroppedInterest)
+ , afterStateChange(transport->afterStateChange)
+ , m_id(INVALID_FACEID)
+ , m_service(std::move(service))
+ , m_transport(std::move(transport))
+ , m_counters(m_service->getCounters(), m_transport->getCounters())
 {
   m_service->setFaceAndTransport(*this, *m_transport);
   m_transport->setFaceAndLinkService(*this, *m_service);
